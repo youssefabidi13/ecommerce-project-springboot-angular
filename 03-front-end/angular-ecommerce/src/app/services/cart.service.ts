@@ -6,6 +6,7 @@ import { CartItem } from '../common/cart-item';
   providedIn: 'root'
 })
 export class CartService {
+  
 
   cartItems: CartItem[] = [];
 
@@ -13,30 +14,26 @@ export class CartService {
   totalQuantity : Subject<number>= new Subject<number>();
 
   addToCart(theCartItem: CartItem){
-    //check if we are already have the item in our cart
+    //check if we already have the item in our cart
+    let alreadyExistsInCart: boolean = false;
+    let existingCartItem: CartItem = undefined!;
 
-    let alreadyExistsInChart: boolean = false;
-    let existingCartItem: CartItem  = undefined!;
+    if(this.cartItems.length > 0){
+      //find the item in the cart based on id
+      existingCartItem = this.cartItems.find(tempCartItem => tempCartItem.id === theCartItem.id)!;
 
-    if(this.cartItems.length >0){
-    //find the item in the cart based on id
-    
-      existingCartItem!= this.cartItems.find(tempCartItem => tempCartItem.id === theCartItem.id);
-
-    //check if we found it
-    alreadyExistsInChart = (existingCartItem!=undefined)
+      //check if we found it
+      alreadyExistsInCart = (existingCartItem != undefined);
     }
-    if(alreadyExistsInChart){
+    if(alreadyExistsInCart){
       //increment the quantity
-
       existingCartItem.quantity++;
-    }else{
+    } else {
       //just add the item to the array
       this.cartItems.push(theCartItem);
     }
 
-    //compute cart total price an total quantity
-
+    //compute cart total price and total quantity
     this.computeCartTotals();
   }
   computeCartTotals() {
@@ -68,6 +65,25 @@ export class CartService {
     console.log("---------------")
   }
 
+  derementQuantity(theCartItem: CartItem) {
+    theCartItem.quantity--;
+    if(theCartItem.quantity === 0){
+      this.remove(theCartItem);
+    }else{
+      this.computeCartTotals();
+    }
+  }
+  remove(theCartItem: CartItem) {
+    //get index of item in the array 
+    const itemIndex = this.cartItems.findIndex(tempCartItem => tempCartItem.id === theCartItem.id );
+
+
+    //if found , remove the item from array at the given index
+    if(itemIndex > -1){
+      this.cartItems.splice(itemIndex, 1);
+      this.computeCartTotals();
+    }
+  }
 
   constructor() { }
 }
