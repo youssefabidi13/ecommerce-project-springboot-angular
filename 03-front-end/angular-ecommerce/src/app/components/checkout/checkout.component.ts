@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Country } from 'src/app/common/country';
 import { State } from 'src/app/common/state';
 import { AbidiShopFormService } from 'src/app/services/abidi-shop-form.service';
+import { CartService } from 'src/app/services/cart.service';
 import { AbidiShopValidators } from 'src/app/validators/abidi-shop-validators';
 
 @Component({
@@ -24,9 +25,11 @@ export class CheckoutComponent implements OnInit{
   billingAddressStates: State[];
 
   constructor(private formBuilder: FormBuilder,
-              private abidiShopFormService: AbidiShopFormService ){}
+              private abidiShopFormService: AbidiShopFormService ,
+              private cartService: CartService){}
   
   ngOnInit(): void {
+    this.reviewCartDetails();
     this.checkoutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
         firstName: new FormControl('',[Validators.required , Validators.minLength(2),AbidiShopValidators.notOnlyWhitespace]),
@@ -96,6 +99,18 @@ export class CheckoutComponent implements OnInit{
           this.countries = data;
         }
        );
+
+  }
+  reviewCartDetails() {
+    //subscribe to cartService.totalQuantity
+    this.cartService.totalQuantity.subscribe(
+      totalQuantity => this.totalQuantity = totalQuantity
+    );
+
+    //subscribe to cartService.totalQuantity
+    this.cartService.totalPrice.subscribe(
+      totalPrice => this.totalPrice = totalPrice
+    );
 
   }
 
