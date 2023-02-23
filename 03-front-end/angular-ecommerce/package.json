@@ -20,6 +20,8 @@
     "@angular/router": "^15.1.0",
     "@fortawesome/fontawesome-free": "^6.2.1",
     "@ng-bootstrap/ng-bootstrap": "^14.0.1",
+    "@okta/okta-angular": "^3.2.2",
+    "@okta/okta-signin-widget": "^5.10.1",
     "@popperjs/core": "^2.11.6",
     "bootstrap": "^5.2.3",
     "rxjs": "~7.8.0",
