@@ -29,6 +29,8 @@ export class CheckoutComponent implements OnInit{
   shippingAddressStates: State[];
   billingAddressStates: State[];
 
+  storage: Storage = sessionStorage;
+
   constructor(private formBuilder: FormBuilder,
               private abidiShopFormService: AbidiShopFormService ,
               private cartService: CartService,
@@ -36,12 +38,16 @@ export class CheckoutComponent implements OnInit{
               private router: Router){}
   
   ngOnInit(): void {
+
+    //read the user's email from the browser storage
+    const theEmail = JSON.parse(this.storage.getItem('theEmail'));
+
     this.reviewCartDetails();
     this.checkoutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
         firstName: new FormControl('',[Validators.required , Validators.minLength(2),AbidiShopValidators.notOnlyWhitespace]),
         lastName: new FormControl('',[Validators.required , Validators.minLength(2),AbidiShopValidators.notOnlyWhitespace]),
-        email: new FormControl('',[Validators.required , Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),AbidiShopValidators.notOnlyWhitespace])}),
+        email: new FormControl(theEmail,[Validators.required , Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),AbidiShopValidators.notOnlyWhitespace])}),
       shippingAddress: this.formBuilder.group({
         street: new FormControl('',[Validators.required ,
              Validators.minLength(2),
