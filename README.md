@@ -5,7 +5,6 @@ This is a full-stack e-commerce application built with Angular 14 for the front-
 - Angular 14 
 - Spring Boot 3 
 - MySQL Database 
-- Stripe API 
 - Okta for OAuth2 and JWT 
 - HTML, CSS, JavaScript, TypeScript, and Bootstrap 
 - Postman for API testing 
